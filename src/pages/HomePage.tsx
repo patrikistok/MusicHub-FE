@@ -101,23 +101,11 @@ export const HomePage = () => {
     url: mp3BlobUrl,
     title: "Kancelář",
     author: "Ektor",
-    thumbnail: "fantaziaCover.jpg",
+    thumbnail: "./imgs/kancelar.jpeg",
   };
 
   return (
     <div className="container mx-auto text-center">
-      <div className="md:w-1/2 lg:w-1/3 mx-auto">
-        {isError && <div>Error fetching song data</div>}
-        {isLoading && <div>Loading song data...</div>}
-        {mp3BlobUrl && !isError && !isLoading && (
-          <AudioPlayer
-            url={mp3BlobUrl}
-            title={audio.title}
-            author={audio.author}
-            thumbnail={audio.thumbnail}
-          />
-        )}
-      </div>
       <div className="divSongs">
         <C.Music>
           {musics.map((music) => (
@@ -140,6 +128,18 @@ export const HomePage = () => {
             />
           ))}
         </C.Music>
+      </div>
+      <div className="md:w-1/2 lg:w-1/3 mx-auto">
+        {isError && <div>Error fetching song data</div>}
+        {isLoading && <div>Loading song data...</div>}
+        {mp3BlobUrl && !isError && !isLoading && (
+          <AudioPlayer
+            url={mp3BlobUrl}
+            title={audio.title}
+            author={audio.author}
+            thumbnail={audio.thumbnail}
+          />
+        )}
       </div>
     </div>
   );
