@@ -8,7 +8,13 @@ export const Layout = ({ children }: Props): JSX.Element => {
   return (
     <>
       <Header />
-      <div style={{height: '90vh', backgroundColor: 'lightgray', paddingTop: '40px'}}>
+      <div
+        style={{
+          height: "100%",
+          backgroundColor: "lightgray",
+          paddingTop: "40px",
+        }}
+      >
         {children}
       </div>
     </>
