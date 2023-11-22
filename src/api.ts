@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "./contexts/useAuthContext";
 
 const api = axios.create({
   baseURL: "http://localhost:8080/api/v1/",
@@ -10,7 +12,12 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    // TODO: Add auhorization
+    const authContext = useContext(AuthContext);
+    const { token } = authContext;
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
     return config;
   },
