@@ -6,6 +6,7 @@ import { string, z } from "zod";
 import { useSignIn } from "../../queries";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/useAuthContext";
+import { FormInput } from "../../components/forms/FormInput";
 
 const { Text, Title } = Typography;
 
@@ -43,34 +44,23 @@ export const SignInPage = () => {
         <Title>Login</Title>
         <Text>Join MusicHub to get started</Text>
         <form onSubmit={handleSubmit(handleSave)} style={{ textAlign: "left" }}>
-          <Text strong>Username</Text>
-          <Controller
+          <FormInput
+            label="Username"
             name="username"
             control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                type="text"
-                suffix={<UserOutlined />}
-                placeholder="Enter username"
-              />
-            )}
+            suffix={<UserOutlined />}
+            placeholder="Enter username"
           />
           <Text style={{ display: "block", fontSize: "12px" }} type="danger">
             {errors.username?.message}
           </Text>
-          <Text strong>Password</Text>
-          <Controller
+          <FormInput
+            label="Password"
             name="password"
             control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                type="password"
-                suffix={<KeyOutlined />}
-                placeholder="Enter password"
-              />
-            )}
+            type="password"
+            suffix={<KeyOutlined />}
+            placeholder="Enter password"
           />
           <Text style={{ display: "block", fontSize: "12px" }} type="danger">
             {errors.password?.message}
