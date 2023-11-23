@@ -13,11 +13,17 @@ type Props = {
 export const FormInput = ({ label, name, control, ...rest }: Props) => {
   return (
     <>
-      {label && <Text strong>{label}:</Text>}
+      {label && (
+        <Text strong style={{ marginBottom: "10px", display: "block" }}>
+          {label}:
+        </Text>
+      )}
       <Controller
         name={name}
         control={control}
-        render={({ field }) => <Input {...field} {...rest} />}
+        render={({ field }) => (
+          <Input {...field} style={{ marginBottom: "20px" }} {...rest} />
+        )}
       />
     </>
   );

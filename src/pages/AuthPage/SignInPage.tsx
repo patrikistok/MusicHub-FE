@@ -1,12 +1,13 @@
-import { Button, Col, Input, Row, Typography } from "antd";
+import { Avatar, Button, Col, Image, Row, Typography } from "antd";
 import { KeyOutlined, UserOutlined } from "@ant-design/icons";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { string, z } from "zod";
 import { useSignIn } from "../../queries";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/useAuthContext";
 import { FormInput } from "../../components/forms/FormInput";
+import { Link } from "react-router-dom";
 
 const { Text, Title } = Typography;
 
@@ -38,11 +39,26 @@ export const SignInPage = () => {
   };
 
   return (
-    <Row>
-      <Col span={16}></Col>
-      <Col style={{ textAlign: "center", padding: "20px" }} span={8}>
-        <Title>Login</Title>
-        <Text>Join MusicHub to get started</Text>
+    <Row style={{ paddingRight: "100px", paddingLeft: "100px" }} gutter={150}>
+      <Col
+        span={12}
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+        }}
+      >
+        <Avatar
+          alt="Dancing Kellie Pickler"
+          src={process.env.PUBLIC_URL + "/imgs/LoginGiph.gif"}
+          size={400}
+        />
+      </Col>
+      <Col style={{ textAlign: "center", padding: "20px" }} span={12}>
+        <Title style={{ marginBottom: "10px" }}>Login</Title>
+        <Text style={{ marginBottom: "50px", display: "block" }}>
+          Join MusicHub to get started
+        </Text>
         <form onSubmit={handleSubmit(handleSave)} style={{ textAlign: "left" }}>
           <FormInput
             label="Username"
@@ -62,7 +78,10 @@ export const SignInPage = () => {
             suffix={<KeyOutlined />}
             placeholder="Enter password"
           />
-          <Text style={{ display: "block", fontSize: "12px" }} type="danger">
+          <Text
+            style={{ display: "block", fontSize: "12px", marginTop: "300px" }}
+            type="danger"
+          >
             {errors.password?.message}
           </Text>
           <Button
@@ -75,6 +94,12 @@ export const SignInPage = () => {
           </Button>
           {isError && <Text type="danger">{error.message}</Text>}
         </form>
+        <Text style={{ marginTop: "15px", display: "block" }}>
+          Dont have an account?{" "}
+          <Link style={{ color: "black", fontWeight: "600" }} to="/register">
+            Sign up!
+          </Link>
+        </Text>
       </Col>
     </Row>
   );
