@@ -66,9 +66,11 @@ export const SignUpPage = () => {
       name: formValues.name,
       password: formValues.password,
       email: formValues.email,
-    }).then(({ user, token }) => {
-      setToken(token);
-      setUser(user);
+    }).then((data) => {
+      if (data) {
+        setToken(data.token);
+        setUser(data.user);
+      }
     });
   };
 

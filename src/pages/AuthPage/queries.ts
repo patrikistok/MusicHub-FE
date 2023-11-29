@@ -8,12 +8,22 @@ import {
 
 export const signUp = async (
   params: UserRegister
-): Promise<RegisterResponse> => {
-  const response = await api.post("/register", params);
-  return response.data;
+): Promise<RegisterResponse | undefined> => {
+  try {
+    const response = await api.post("/register", params);
+    return response.data;
+  } catch (error: any) {
+    console.log(error.message);
+  }
 };
 
-export const signIn = async (params: UserLogin): Promise<LoginResponse> => {
-  const response = await api.post("/authenticate", params);
-  return response.data;
+export const signIn = async (
+  params: UserLogin
+): Promise<LoginResponse | undefined> => {
+  try {
+    const response = await api.post("/authenticate", params);
+    return response.data;
+  } catch (error: any) {
+    console.log(error.message);
+  }
 };

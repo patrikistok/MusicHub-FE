@@ -8,14 +8,14 @@ import {
 import { signIn, signUp } from "./queries";
 
 export const useSignInMutation = (): UseMutationResult<
-  LoginResponse,
+  LoginResponse | undefined,
   Error,
   UserLogin,
   unknown
 > => useMutation(signIn);
 
 export const useSignUpMutation = (): UseMutationResult<
-  RegisterResponse,
+  RegisterResponse | undefined,
   Error,
   UserRegister,
   unknown

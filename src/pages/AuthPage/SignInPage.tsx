@@ -35,9 +35,11 @@ export const SignInPage = () => {
       username: formValues.username,
       password: formValues.password,
     })
-      .then(({ user, token }) => {
-        setToken(token);
-        setUser(user);
+      .then((data) => {
+        if (data) {
+          setToken(data.token);
+          setUser(data.user);
+        }
       })
       .catch((error) => console.log(error));
   };
