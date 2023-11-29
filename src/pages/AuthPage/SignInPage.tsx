@@ -1,5 +1,5 @@
-import { Avatar, Button, Col, Image, Row, Typography } from "antd";
-import { KeyOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Col, Row, Typography } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { string, z } from "zod";
@@ -7,9 +7,11 @@ import { useSignIn } from "../../queries";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/useAuthContext";
 import { FormInput } from "../../components/forms/FormInput";
+import { LeftColumn } from "./components/LeftColumn";
 import { Link } from "react-router-dom";
+import { PageTitle } from "./components/PageTitle";
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 const schema = z.object({
   username: string().min(1, { message: "Username is required" }),
@@ -40,50 +42,27 @@ export const SignInPage = () => {
 
   return (
     <Row style={{ paddingRight: "100px", paddingLeft: "100px" }} gutter={150}>
-      <Col
-        span={12}
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          display: "flex",
-        }}
-      >
-        <Avatar
-          alt="Dancing Kellie Pickler"
-          src={process.env.PUBLIC_URL + "/imgs/LoginGiph.gif"}
-          size={400}
-        />
-      </Col>
-      <Col style={{ textAlign: "center", padding: "20px" }} span={12}>
-        <Title style={{ marginBottom: "10px" }}>Login</Title>
-        <Text style={{ marginBottom: "50px", display: "block" }}>
-          Join MusicHub to get started
-        </Text>
-        <form onSubmit={handleSubmit(handleSave)} style={{ textAlign: "left" }}>
+      <LeftColumn />
+      <Col style={{ padding: "20px" }} span={12}>
+        <PageTitle title="Sign In" />
+        <form onSubmit={handleSubmit(handleSave)}>
           <FormInput
             label="Username"
             name="username"
             control={control}
             suffix={<UserOutlined />}
             placeholder="Enter username"
+            error={errors.username?.message}
           />
-          <Text style={{ display: "block", fontSize: "12px" }} type="danger">
-            {errors.username?.message}
-          </Text>
           <FormInput
             label="Password"
             name="password"
             control={control}
             type="password"
-            suffix={<KeyOutlined />}
+            suffix={<LockOutlined />}
             placeholder="Enter password"
+            error={errors.password?.message}
           />
-          <Text
-            style={{ display: "block", fontSize: "12px", marginTop: "300px" }}
-            type="danger"
-          >
-            {errors.password?.message}
-          </Text>
           <Button
             disabled={isLoading}
             htmlType="submit"
@@ -94,7 +73,9 @@ export const SignInPage = () => {
           </Button>
           {isError && <Text type="danger">{error.message}</Text>}
         </form>
-        <Text style={{ marginTop: "15px", display: "block" }}>
+        <Text
+          style={{ marginTop: "15px", display: "block", textAlign: "center" }}
+        >
           Dont have an account?{" "}
           <Link style={{ color: "black", fontWeight: "600" }} to="/register">
             Sign up!
