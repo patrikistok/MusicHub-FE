@@ -1,5 +1,6 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { User } from "../types";
+import { setAuthToken } from "../api";
 
 type AuthContextType = {
   token: string;
@@ -29,6 +30,10 @@ export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
     storedUser ? (JSON.parse(storedUser) as User) : null
   );
   const isAuthenticated = !!token;
+
+  useEffect(() => {
+    setAuthToken(token);
+  }, [token]);
 
   return (
     <AuthContext.Provider

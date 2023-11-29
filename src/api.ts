@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useContext } from "react";
-import { AuthContext } from "./contexts/useAuthContext";
 
 const api = axios.create({
   baseURL: "http://localhost:8080/api/v1/",
@@ -10,20 +8,12 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use(
-  (config) => {
-    const authContext = useContext(AuthContext);
-    const { token } = authContext;
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+export const setAuthToken = (token: string) => {
+  if (token) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete api.defaults.headers.common["Authorization"];
   }
-);
+};
 
 export default api;

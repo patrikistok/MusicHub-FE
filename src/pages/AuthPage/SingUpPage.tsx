@@ -1,7 +1,7 @@
 import { Button, Col, Row, Typography } from "antd";
 import { LeftColumn } from "./components/LeftColumn";
 import { string, z } from "zod";
-import { useSignUp } from "../../queries";
+import { useSignUpMutation } from "./hooks";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext } from "react";
@@ -50,7 +50,7 @@ const schema = z
 type FormType = z.infer<typeof schema>;
 
 export const SignUpPage = () => {
-  const { mutateAsync, isLoading, isError, error } = useSignUp();
+  const { mutateAsync, isLoading, isError, error } = useSignUpMutation();
   const { handleSubmit, formState, control } = useForm<FormType>({
     defaultValues: { username: "", name: "", password: "", email: "" },
     resolver: zodResolver(schema),

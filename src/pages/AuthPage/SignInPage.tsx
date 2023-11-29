@@ -3,7 +3,7 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { string, z } from "zod";
-import { useSignIn } from "../../queries";
+import { useSignInMutation } from "./hooks";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/useAuthContext";
 import { FormInput } from "../../components/forms/FormInput";
@@ -21,7 +21,7 @@ const schema = z.object({
 type FormType = z.infer<typeof schema>;
 
 export const SignInPage = () => {
-  const { mutateAsync, isLoading, isError, error } = useSignIn();
+  const { mutateAsync, isLoading, isError, error } = useSignInMutation();
   const { handleSubmit, formState, control } = useForm<FormType>({
     defaultValues: { username: "", password: "" },
     resolver: zodResolver(schema),
@@ -34,10 +34,12 @@ export const SignInPage = () => {
     mutateAsync({
       username: formValues.username,
       password: formValues.password,
-    }).then(({ user, token }) => {
-      setToken(token);
-      setUser(user);
-    });
+    })
+      .then(({ user, token }) => {
+        setToken(token);
+        setUser(user);
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
