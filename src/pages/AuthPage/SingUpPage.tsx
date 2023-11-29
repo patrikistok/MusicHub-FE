@@ -73,11 +73,23 @@ export const SignUpPage = () => {
   };
 
   return (
-    <Row style={{ paddingRight: "100px", paddingLeft: "100px" }} gutter={150}>
+    <Row style={{ padding: "100px", minHeight: "100vh" }}>
       <LeftColumn />
-      <Col span={12}>
+      <Col
+        style={{
+          paddingLeft: "10%",
+          paddingRight: "10%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+        span={24}
+        xl={12}
+      >
         <PageTitle title="Sign Up" />
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          style={{ flex: 1, position: "relative", minHeight: "525px" }}
+        >
           <FormInput
             label="Full name"
             name="name"
@@ -120,15 +132,17 @@ export const SignUpPage = () => {
             placeholder="************************"
             error={errors.confirmPassword?.message}
           />
-          <Button
-            disabled={isLoading}
-            htmlType="submit"
-            type="primary"
-            style={{ width: "100%" }}
-          >
-            Sign Up
-          </Button>
-          {isError && <Text type="danger">{error.message}</Text>}
+          <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
+            <Button
+              disabled={isLoading}
+              htmlType="submit"
+              type="primary"
+              style={{ width: "100%" }}
+            >
+              Sign Up
+            </Button>
+            {isError && <Text type="danger">{error.message}</Text>}
+          </div>
         </form>
         <Text
           style={{ marginTop: "15px", display: "block", textAlign: "center" }}

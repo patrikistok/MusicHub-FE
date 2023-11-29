@@ -1,13 +1,10 @@
 import { Avatar, Col } from "antd";
 
-type Props = {
-  span?: number;
-};
-
-export const LeftColumn = ({ span }: Props) => {
+export const LeftColumn = () => {
   return (
     <Col
-      span={span ?? 12}
+      span={24}
+      xl={12}
       style={{
         alignItems: "center",
         justifyContent: "center",
@@ -17,7 +14,7 @@ export const LeftColumn = ({ span }: Props) => {
       <Avatar
         alt="Dancing Kellie Pickler"
         src={process.env.PUBLIC_URL + "/imgs/LoginGiph.gif"}
-        size={400}
+        size={500}
       />
     </Col>
   );

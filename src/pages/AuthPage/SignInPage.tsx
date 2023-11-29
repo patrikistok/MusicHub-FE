@@ -43,11 +43,23 @@ export const SignInPage = () => {
   };
 
   return (
-    <Row style={{ paddingRight: "100px", paddingLeft: "100px" }} gutter={150}>
+    <Row style={{ padding: "100px", minHeight: "100vh" }}>
       <LeftColumn />
-      <Col style={{ padding: "20px" }} span={12}>
+      <Col
+        style={{
+          paddingLeft: "10%",
+          paddingRight: "10%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+        span={24}
+        xl={12}
+      >
         <PageTitle title="Sign In" />
-        <form onSubmit={handleSubmit(handleSave)}>
+        <form
+          onSubmit={handleSubmit(handleSave)}
+          style={{ flex: 1, position: "relative", minHeight: "250px" }}
+        >
           <FormInput
             label="Username"
             name="username"
@@ -65,15 +77,17 @@ export const SignInPage = () => {
             placeholder="Enter password"
             error={errors.password?.message}
           />
-          <Button
-            disabled={isLoading}
-            htmlType="submit"
-            type="primary"
-            style={{ width: "100%" }}
-          >
-            Sign In
-          </Button>
-          {isError && <Text type="danger">{error.message}</Text>}
+          <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
+            <Button
+              disabled={isLoading}
+              htmlType="submit"
+              type="primary"
+              style={{ width: "100%" }}
+            >
+              Sign In
+            </Button>
+            {isError && <Text type="danger">{error.message}</Text>}
+          </div>
         </form>
         <Text
           style={{ marginTop: "15px", display: "block", textAlign: "center" }}
