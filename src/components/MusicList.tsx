@@ -1,84 +1,20 @@
-import { decodeImage } from "../utils/decodeImage";
+import { Song } from "../types/Song";
 import * as C from "./styles";
 
 type Props = {
-  img: string;
-  name: string;
-  author: string;
-  audio: string;
-  musicId: string;
-  id: string;
-  isFull: boolean;
-  genre: string;
-  genres: string;
-  isSearch: boolean;
-  search: string;
-  windowWidth: number;
-  setId: (e: string) => void;
-  setIsFull: (e: boolean) => void;
+  song: Song;
+  setCurrentSong: React.Dispatch<React.SetStateAction<Song | undefined>>;
 };
 
-export const MusicList = ({
-  img,
-  name,
-  author,
-  audio,
-  musicId,
-  isFull,
-  id,
-  genre,
-  genres,
-  isSearch,
-  search,
-  windowWidth,
-  setId,
-}: Props) => {
+export const MusicList = ({ song, setCurrentSong }: Props) => {
   return (
     <C.Container>
-      {isSearch ? (
-        search.toLowerCase() === name.toLowerCase() ||
-        search === author.toLowerCase() ||
-        search === genre.toLowerCase() ? (
-          <div className="divGenre" onClick={() => setId(musicId)}>
-            <img src={URL.createObjectURL(decodeImage(img))} />
-            <h1>{name}</h1>
-            <h3>{author}</h3>
-            <audio src={audio} />
-          </div>
-        ) : (
-          ""
-        )
-      ) : genres !== "" ? (
-        genre === genres ? (
-          <div className="divGenre" onClick={() => setId(musicId)}>
-            <img src={img} />
-            <h1>{name}</h1>
-            <h3>{author}</h3>
-            <audio src={audio} />
-          </div>
-        ) : (
-          ""
-        )
-      ) : isFull && windowWidth <= 810 ? (
-        musicId === id ? (
-          <div className="containerFull">
-            <div className="divFull">
-              <img src={img} alt="" />
-              <h1>{name}</h1>
-              <h3>{author}</h3>
-            </div>
-          </div>
-        ) : (
-          ""
-        )
-      ) : (
-        <div className="divAll" onClick={() => setId(musicId)}>
-          <img src={img} />
-          <h1>{name}</h1>
-          <h3>{author}</h3>
-          <audio src={audio} />
-        </div>
-      )}
+      <div className="divAll" onClick={() => setCurrentSong(song)}>
+        <img src={song.coverPhoto} />
+        <h1>{song.name}</h1>
+        <h3>{song.artist}</h3>
+        <audio src={song.sourceName} />
+      </div>
     </C.Container>
   );
 };
