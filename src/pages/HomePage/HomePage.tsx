@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AudioPlayer } from "../../components/AudioPlayer";
-import { useGetSong } from "../../hooks/useGetSong";
 import * as C from "../styles";
 import { MusicList } from "../../components/MusicList";
-import { useListSongs } from "./hooks";
+import { useListSongs, usePlaySong } from "./hooks";
 import "./homePage.css";
 
 export const HomePage = () => {
@@ -14,7 +13,12 @@ export const HomePage = () => {
   const [search, setSearch] = useState<string>("");
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const songSource = "LinkinParkInTheEnd.mp3"; // mock data
-  const { mp3BlobUrl, isError, isLoading } = useGetSong(songSource);
+  const { data: songURL, mutate, isLoading, isError } = usePlaySong();
+
+  useEffect(() => {
+    mutate(songSource);
+  }, []);
+
   const {
     data,
     isError: isSongsError,
@@ -23,7 +27,7 @@ export const HomePage = () => {
 
   // mock data
   const audio = {
-    url: mp3BlobUrl,
+    url: songURL,
     title: "In the end",
     author: "Linkin Park",
     thumbnail: "./imgs/intheend.jpeg",
@@ -57,9 +61,9 @@ export const HomePage = () => {
       <div className="md:w-1/2 lg:w-1/3 mx-auto">
         {isError && <div>Error fetching song data</div>}
         {isLoading && <div>Loading song data...</div>}
-        {mp3BlobUrl && !isError && !isLoading && (
+        {songURL && !isError && !isLoading && (
           <AudioPlayer
-            url={mp3BlobUrl}
+            url={songURL}
             title={audio.title}
             author={audio.author}
             thumbnail={audio.thumbnail}
