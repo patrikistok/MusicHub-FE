@@ -1,3 +1,4 @@
+import { decodeImage } from "../utils/decodeImage";
 import * as C from "./styles";
 
 type Props = {
@@ -39,7 +40,7 @@ export const MusicList = ({
         search === author.toLowerCase() ||
         search === genre.toLowerCase() ? (
           <div className="divGenre" onClick={() => setId(musicId)}>
-            <img src={img} />
+            <img src={URL.createObjectURL(decodeImage(img))} />
             <h1>{name}</h1>
             <h3>{author}</h3>
             <audio src={audio} />
