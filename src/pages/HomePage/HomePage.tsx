@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { AudioPlayer } from "../../components/AudioPlayer";
-import * as C from "../styles";
-import { MusicList } from "../../components/MusicList";
+import { SongCard } from "../../components/SongCard";
 import { useListSongs, usePlaySong } from "./hooks";
 import "./homePage.css";
 import { Song } from "../../types/Song";
+import { Flex } from "antd";
 
 export const HomePage = () => {
   const { data: songURL, mutate, isLoading, isError } = usePlaySong();
@@ -24,17 +24,15 @@ export const HomePage = () => {
   }, [currentSong]);
 
   return (
-    <div className="container mx-auto text-center">
+    <div>
       {isSongsError && <div>Error fetching all songs data</div>}
       {isSongsLoading && <div>Loading all songs data</div>}
       {fetchedSongs && !isSongsLoading && !isSongsError && (
-        <div className="divSongs">
-          <C.Music>
-            {fetchedSongs?.map((song) => (
-              <MusicList song={song} setCurrentSong={setCurrentSong} />
-            ))}
-          </C.Music>
-        </div>
+        <Flex wrap="wrap" justify="center" align="center" gap="middle">
+          {fetchedSongs?.map((song) => (
+            <SongCard song={song} setCurrentSong={setCurrentSong} />
+          ))}
+        </Flex>
       )}
       <div className="md:w-1/2 lg:w-1/3 mx-auto">
         {isError && <div>Error fetching song data</div>}
