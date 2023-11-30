@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes as RouterRoutes } from "react-router-dom";
-import { HomePage } from "./pages/HomePage";
+import { HomePage } from "./pages/HomePage/HomePage";
 import { SignInPage } from "./pages/AuthPage/SignInPage";
 import { SignUpPage } from "./pages/AuthPage/SingUpPage";
 import { ProtectedRoute } from "./ProtectedRoute";

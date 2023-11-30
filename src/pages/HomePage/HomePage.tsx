@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
-import { AudioPlayer } from "../components/AudioPlayer";
-import { useGetSong } from "../hooks/useGetSong";
+import { useState } from "react";
+import { AudioPlayer } from "../../components/AudioPlayer";
+import { useGetSong } from "../../hooks/useGetSong";
 import * as C from "../styles";
-import { MusicList } from "../components/MusicList";
-import { useGetAllSongs } from "../hooks/useGetAllSongs";
-import { Song } from "../types/Song";
+import { MusicList } from "../../components/MusicList";
+import { useListSongs } from "./hooks";
 
 export const HomePage = () => {
   const [id, setId] = useState<string>("");
@@ -19,7 +18,7 @@ export const HomePage = () => {
     data,
     isError: isSongsError,
     isLoading: isSongsLoading,
-  } = useGetAllSongs();
+  } = useListSongs();
 
   // mock data
   const audio = {
@@ -33,7 +32,7 @@ export const HomePage = () => {
     <div className="container mx-auto text-center">
       <div className="divSongs">
         <C.Music>
-          {data?.map((music: Song) => (
+          {data?.map((music) => (
             <MusicList
               key={music.id}
               img={music.coverPhoto}
