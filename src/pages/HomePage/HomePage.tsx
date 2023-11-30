@@ -4,6 +4,7 @@ import { useGetSong } from "../../hooks/useGetSong";
 import * as C from "../styles";
 import { MusicList } from "../../components/MusicList";
 import { useListSongs } from "./hooks";
+import "./homePage.css";
 
 export const HomePage = () => {
   const [id, setId] = useState<string>("");
