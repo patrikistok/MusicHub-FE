@@ -2,15 +2,14 @@ import ReactPlayer from "react-player";
 import { useRef, useState } from "react";
 import { AudioDetails } from "./AudioDetails";
 import { PlayerControls } from "./PlayerControls";
+import { Song } from "../types/Song";
 
 type Props = {
-  url: string;
-  title: string;
-  author: string;
-  thumbnail: string;
+  currentSong: Song;
+  songURL: string | undefined;
 };
 
-export const AudioPlayer = ({ url, title, author, thumbnail }: Props) => {
+export const AudioPlayer = ({ currentSong, songURL }: Props) => {
   const playerRef = useRef<ReactPlayer | null>(null);
   const [playing, setPlaying] = useState<boolean>(false);
   const [muted, setMuted] = useState<boolean>(false);
@@ -18,8 +17,6 @@ export const AudioPlayer = ({ url, title, author, thumbnail }: Props) => {
   const [progress, setProgress] = useState<number>(0);
   const [loop, setLoop] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
-
-  // event handlers for custom controls
 
   const handlePlay = () => {
     setPlaying(true);
@@ -51,37 +48,42 @@ export const AudioPlayer = ({ url, title, author, thumbnail }: Props) => {
 
   return (
     <div>
-      <ReactPlayer
-        style={{ position: "absolute", zIndex: "-100" }}
-        ref={playerRef}
-        url={url}
-        playing={playing}
-        volume={volume}
-        muted={muted}
-        loop={loop}
-        onPlay={handlePlay}
-        onPause={handlePause}
-        onProgress={handleProgress}
-        onDuration={handleDuration}
-      />
-
-      <div className="shadow rounded-xl">
-        <AudioDetails title={title} author={author} thumbnail={thumbnail} />
-        <PlayerControls
-          playerRef={playerRef}
+      <div>
+        <ReactPlayer
+          style={{ position: "absolute", zIndex: "-100" }}
+          ref={playerRef}
+          url={songURL}
           playing={playing}
           volume={volume}
           muted={muted}
-          progress={progress}
-          duration={duration}
           loop={loop}
-          // event handler props
-          toggleMute={toggleMute}
-          handlePlay={handlePlay}
-          toggleLoop={toggleLoop}
-          handlePause={handlePause}
-          handleVolumeChange={handleVolumeChange}
+          onPlay={handlePlay}
+          onPause={handlePause}
+          onProgress={handleProgress}
+          onDuration={handleDuration}
         />
+
+        <div className="shadow rounded-xl">
+          <AudioDetails
+            title={currentSong.name}
+            author={currentSong.artist}
+            thumbnail={currentSong.coverPhoto}
+          />
+          <PlayerControls
+            playerRef={playerRef}
+            playing={playing}
+            volume={volume}
+            muted={muted}
+            progress={progress}
+            duration={duration}
+            loop={loop}
+            toggleMute={toggleMute}
+            handlePlay={handlePlay}
+            toggleLoop={toggleLoop}
+            handlePause={handlePause}
+            handleVolumeChange={handleVolumeChange}
+          />
+        </div>
       </div>
     </div>
   );
