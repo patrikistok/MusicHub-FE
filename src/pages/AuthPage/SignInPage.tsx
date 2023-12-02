@@ -8,7 +8,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../contexts/useAuthContext";
 import { FormInput } from "../../components/forms/FormInput";
 import { LeftColumn } from "./components/LeftColumn";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PageTitle } from "./components/PageTitle";
 import { hashPassword } from "./utils";
 
@@ -29,6 +29,7 @@ export const SignInPage = () => {
   });
   const { errors } = formState;
   const { setToken, setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSave = async (formValues: FormType) => {
     hashPassword(formValues.password)
@@ -39,8 +40,15 @@ export const SignInPage = () => {
         })
           .then((data) => {
             if (data) {
-              setToken(data.token);
-              setUser(data.user);
+              setToken(data.username);
+              setUser({
+                id: data.id,
+                name: data.fullName,
+                username: data.username,
+                email: data.email,
+              });
+              localStorage.setItem("logged", data.username);
+              navigate("/");
             }
           })
           .catch((error) => console.log(error));

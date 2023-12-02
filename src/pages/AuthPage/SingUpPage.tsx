@@ -14,8 +14,8 @@ import {
   MailOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import { hashPassword } from "./utils";
+import { Link, useNavigate } from "react-router-dom";
 
 const { Text } = Typography;
 
@@ -27,9 +27,9 @@ const schema = z
       })
       .min(3, { message: "Username must contain at least 3 characters" }),
 
-    name: string()
+    fullName: string()
       .min(1, { message: "Name is required" })
-      .refine((name) => name.trim().split(" ").length >= 2, {
+      .refine((fullName) => fullName.trim().split(" ").length >= 2, {
         message: "This is not a valid name",
       }),
 
@@ -53,27 +53,25 @@ type FormType = z.infer<typeof schema>;
 export const SignUpPage = () => {
   const { mutateAsync, isLoading, isError, error } = useSignUpMutation();
   const { handleSubmit, formState, control } = useForm<FormType>({
-    defaultValues: { username: "", name: "", password: "", email: "" },
+    defaultValues: { username: "", fullName: "", password: "", email: "" },
     resolver: zodResolver(schema),
   });
 
   const { errors } = formState;
   const { setToken, setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const onSubmit = async (formValues: FormType) => {
     hashPassword(formValues.password)
       .then((hashedPassword: string) => {
         mutateAsync({
           username: formValues.username,
-          name: formValues.name,
+          fullName: formValues.fullName,
           password: hashedPassword,
           email: formValues.email,
         })
-          .then((data) => {
-            if (data) {
-              setToken(data.token);
-              setUser(data.user);
-            }
+          .then(() => {
+            navigate("/login");
           })
           .catch((error) => console.log(error));
       })
@@ -102,11 +100,11 @@ export const SignUpPage = () => {
         >
           <FormInput
             label="Full name"
-            name="name"
+            name="fullName"
             control={control}
             suffix={<IdcardOutlined />}
             placeholder="Enter your name"
-            error={errors.name?.message}
+            error={errors.fullName?.message}
           />
           <FormInput
             label="Email"
@@ -131,7 +129,7 @@ export const SignUpPage = () => {
             suffix={<LockOutlined />}
             type="password"
             placeholder="************************"
-            error={errors.name?.message}
+            error={errors.password?.message}
           />
           <FormInput
             label="Confirm password"
