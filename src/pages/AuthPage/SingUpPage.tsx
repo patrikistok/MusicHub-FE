@@ -15,6 +15,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { hashPassword } from "./utils";
 
 const { Text } = Typography;
 
@@ -60,18 +61,25 @@ export const SignUpPage = () => {
   const { setToken, setUser } = useContext(AuthContext);
 
   const onSubmit = async (formValues: FormType) => {
-    console.log(formValues);
-    mutateAsync({
-      username: formValues.username,
-      name: formValues.name,
-      password: formValues.password,
-      email: formValues.email,
-    }).then((data) => {
-      if (data) {
-        setToken(data.token);
-        setUser(data.user);
-      }
-    });
+    hashPassword(formValues.password)
+      .then((hashedPassword) => {
+        mutateAsync({
+          username: formValues.username,
+          name: formValues.name,
+          password: hashedPassword,
+          email: formValues.email,
+        })
+          .then((data) => {
+            if (data) {
+              setToken(data.token);
+              setUser(data.user);
+            }
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch((error) => {
+        console.error("Password hashing error:", error);
+      });
   };
 
   return (
