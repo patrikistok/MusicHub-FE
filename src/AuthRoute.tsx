@@ -5,6 +5,7 @@ import { AuthContext } from "./contexts/useAuthContext";
 export const AuthRoute = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useContext(AuthContext);
+  document.body.style.overflow = "auto";
 
   useEffect(() => {
     if (isAuthenticated) {
