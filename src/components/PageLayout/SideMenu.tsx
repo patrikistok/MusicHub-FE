@@ -27,6 +27,7 @@ export const SideMenu = () => {
 
   const logout = () => {
     setToken("");
+    localStorage.removeItem("logged");
     setUser(null);
     navigate("/login");
   };

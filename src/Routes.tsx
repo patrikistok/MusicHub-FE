@@ -11,10 +11,10 @@ export const Routes = () => {
     <RouterRoutes>
       <Route index element={<Navigate to="/homepage" />} />
 
-      {/* <Route element={<ProtectedRoute />}> */}
-      <Route path="/homepage" element={<HomePage />} />
-      <Route path="/profile" element={<Profile />} />
-      {/* </Route> */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/homepage" element={<HomePage />} />
+        <Route path="/profile" element={<Profile />} />
+      </Route>
 
       <Route element={<AuthRoute />}>
         <Route path="/login" element={<SignInPage />} />
