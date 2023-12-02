@@ -62,7 +62,7 @@ export const SignUpPage = () => {
 
   const onSubmit = async (formValues: FormType) => {
     hashPassword(formValues.password)
-      .then((hashedPassword) => {
+      .then((hashedPassword: string) => {
         mutateAsync({
           username: formValues.username,
           name: formValues.name,

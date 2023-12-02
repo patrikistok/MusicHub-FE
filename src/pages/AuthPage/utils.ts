@@ -9,7 +9,6 @@ export const hashPassword = (password: string): Promise<string> => {
         console.error("Error hashing password:", err);
         reject(err);
       } else {
-        console.log("Hashed Password:", hash);
         resolve(hash);
       }
     });

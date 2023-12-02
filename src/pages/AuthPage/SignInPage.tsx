@@ -32,7 +32,7 @@ export const SignInPage = () => {
 
   const handleSave = async (formValues: FormType) => {
     hashPassword(formValues.password)
-      .then((hashedPassword) => {
+      .then((hashedPassword: string) => {
         mutateAsync({
           usernameEmail: formValues.usernameEmail,
           password: hashedPassword,
