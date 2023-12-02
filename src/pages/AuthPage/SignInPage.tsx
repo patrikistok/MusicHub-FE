@@ -47,7 +47,15 @@ export const SignInPage = () => {
                 username: data.username,
                 email: data.email,
               });
-              localStorage.setItem("logged", data.username);
+              localStorage.setItem(
+                "logged",
+                JSON.stringify({
+                  id: data.id,
+                  name: data.fullName,
+                  username: data.username,
+                  email: data.email,
+                })
+              );
               navigate("/");
             }
           })
