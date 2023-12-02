@@ -11,15 +11,19 @@ export type UserLogin = {
 };
 
 export type LoginResponse = {
-  user: User;
-  token: string;
+  id: number;
+  username: string;
+  email: string;
+  fullName: string;
+  isAdmin: boolean;
+  photo: string;
 };
 
 export type UserRegister = {
   username: string;
   email: string;
   password: string;
-  name: string;
+  fullName: string;
 };
 
 export type RegisterResponse = {
