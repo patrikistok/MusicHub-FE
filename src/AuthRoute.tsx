@@ -9,7 +9,6 @@ export const AuthRoute = () => {
 
   useEffect(() => {
     if (localStorage.getItem("logged")) {
-      console.log(!localStorage.getItem("logged") + " ma tam byt nieco");
       navigate("/");
     }
   }, []);

@@ -40,7 +40,6 @@ export const SignInPage = () => {
         })
           .then((data) => {
             if (data) {
-              console.log(data);
               setToken(data.username);
               setUser({
                 id: data.id,

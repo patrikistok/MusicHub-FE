@@ -9,7 +9,6 @@ export const ProtectedRoute = () => {
 
   useEffect(() => {
     if (!localStorage.getItem("logged")) {
-      console.log(!localStorage.getItem("logged") + " nema tam byt nic");
       navigate("/login");
     }
   }, []);
