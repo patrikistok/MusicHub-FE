@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
-import { AudioPlayer } from "../../components/AudioPlayer";
+import { useState } from "react";
 import { SongCard } from "../../components/SongCard";
-import { useListSongs, usePlaySong } from "./hooks";
+import { useListSongs } from "./hooks";
 import "./homePage.css";
 import { Song } from "../../types/Song";
 import { Flex } from "antd";
+import { PlaySongContainer } from "./components/PlaySongContainer";
 
 export const HomePage = () => {
-  const { data: songURL, mutate, isLoading, isError } = usePlaySong();
+  const [songHistory, setSongHistory] = useState<Song[]>([]);
+  const [historyPosition, setHistoryPosition] = useState<number>(0);
 
   const {
     data: fetchedSongs,
@@ -15,32 +16,63 @@ export const HomePage = () => {
     isLoading: isSongsLoading,
   } = useListSongs();
 
-  const [currentSong, setCurrentSong] = useState<Song | undefined>(undefined);
+  const setFirstSong = (song: Song) => {
+    console.log(song);
+    console.log(songHistory);
+    setSongHistory([...songHistory, song]);
+  };
 
-  useEffect(() => {
-    if (currentSong) {
-      mutate(currentSong.sourceName);
+  const onPrevious = () => {
+    if (historyPosition !== 0) {
+      setHistoryPosition(historyPosition - 1);
     }
-  }, [currentSong]);
+  };
+
+  const onNext = () => {
+    if (fetchedSongs) {
+      const nextSong =
+        fetchedSongs[Math.floor(Math.random() * fetchedSongs.length)];
+      setSongHistory([...songHistory, nextSong]);
+      setHistoryPosition(historyPosition + 1);
+    }
+  };
+
+  const onCloseModal = () => {
+    setSongHistory([]);
+    setHistoryPosition(0);
+  };
 
   return (
-    <div>
+    <div
+      style={{
+        height: "100vh",
+        width: "100%",
+        position: "relative",
+      }}
+    >
       {isSongsError && <div>Error fetching all songs data</div>}
       {isSongsLoading && <div>Loading all songs data</div>}
       {fetchedSongs && !isSongsLoading && !isSongsError && (
-        <Flex wrap="wrap" justify="center" align="center" gap="middle">
+        <Flex
+          wrap="wrap"
+          justify="center"
+          align="center"
+          gap="middle"
+          style={{ display: songHistory.length > 0 ? "none" : "flex" }}
+        >
           {fetchedSongs?.map((song) => (
-            <SongCard song={song} setCurrentSong={setCurrentSong} />
+            <SongCard song={song} setCurrentSong={setFirstSong} />
           ))}
         </Flex>
       )}
-      <div className="md:w-1/2 lg:w-1/3 mx-auto">
-        {isError && <div>Error fetching song data</div>}
-        {isLoading && <div>Loading song data...</div>}
-        {currentSong && !isError && !isLoading && (
-          <AudioPlayer currentSong={currentSong} songURL={songURL} />
-        )}
-      </div>
+      {songHistory.length > 0 && (
+        <PlaySongContainer
+          currentSong={songHistory[historyPosition]}
+          onCloseModal={onCloseModal}
+          onNext={onNext}
+          onPrevious={onPrevious}
+        />
+      )}
     </div>
   );
 };
