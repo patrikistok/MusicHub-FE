@@ -3,6 +3,7 @@ import { CiPlay1, CiPause1 } from "react-icons/ci";
 import { VscMute, VscUnmute } from "react-icons/vsc";
 import { ImLoop } from "react-icons/im";
 import { Duration } from "./Duration";
+import { StepBackwardOutlined, StepForwardOutlined } from "@ant-design/icons";
 
 type Props = {
   playerRef: any;
@@ -17,6 +18,8 @@ type Props = {
   toggleMute: () => void;
   toggleLoop: () => void;
   handlePause: () => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
   handleVolumeChange: (newVolume: number) => void;
 };
 export const PlayerControls = ({
@@ -30,6 +33,8 @@ export const PlayerControls = ({
   handlePlay,
   toggleLoop,
   handlePause,
+  handlePrevious,
+  handleNext,
   handleVolumeChange,
   toggleMute,
 }: Props) => {
@@ -118,13 +123,27 @@ export const PlayerControls = ({
         </div>
 
         {/* play/pause button */}
-        <div className="flex justify-center">
+        <div className="flex gap-2 justify-center">
+          <button
+            ref={playPauseButtonRef}
+            className="focus:outline focus:outline-cyan-500 border border-cyan-500 rounded-md p-4 hover:bg-gray-200"
+            onClick={handlePrevious}
+          >
+            <StepBackwardOutlined />
+          </button>
           <button
             ref={playPauseButtonRef}
             className="focus:outline focus:outline-cyan-500 border border-cyan-500 rounded-md p-4 hover:bg-gray-200"
             onClick={togglePlayAndPause}
           >
             {playing ? <CiPause1 /> : <CiPlay1 />}
+          </button>
+          <button
+            ref={playPauseButtonRef}
+            className="focus:outline focus:outline-cyan-500 border border-cyan-500 rounded-md p-4 hover:bg-gray-200"
+            onClick={handleNext}
+          >
+            <StepForwardOutlined />
           </button>
         </div>
 
@@ -141,7 +160,7 @@ export const PlayerControls = ({
           {/* volume slider */}
           <input
             type="range"
-            className="focus:outline focus:outline-cyan-500 w-[50%] h-2 rounded-lg  bg-slate-400 accent-gray-900"
+            className="w-[50%] h-2 rounded-lg  bg-slate-400 accent-gray-900"
             min={0}
             max={1}
             step={0.1}
