@@ -8,13 +8,14 @@ import { useContext } from "react";
 import { AuthContext } from "../../contexts/useAuthContext";
 import { FormInput } from "../../components/forms/FormInput";
 import { LeftColumn } from "./components/LeftColumn";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PageTitle } from "./components/PageTitle";
+import { hashPassword } from "./utils";
 
 const { Text } = Typography;
 
 const schema = z.object({
-  username: string().min(1, { message: "Username is required" }),
+  usernameEmail: string().min(1, { message: "Username or email is required" }),
   password: string().min(1, { message: "Password is required" }),
 });
 
@@ -23,25 +24,46 @@ type FormType = z.infer<typeof schema>;
 export const SignInPage = () => {
   const { mutateAsync, isLoading, isError, error } = useSignInMutation();
   const { handleSubmit, formState, control } = useForm<FormType>({
-    defaultValues: { username: "", password: "" },
+    defaultValues: { usernameEmail: "", password: "" },
     resolver: zodResolver(schema),
   });
   const { errors } = formState;
   const { setToken, setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSave = async (formValues: FormType) => {
-    console.log(formValues);
-    mutateAsync({
-      username: formValues.username,
-      password: formValues.password,
-    })
-      .then((data) => {
-        if (data) {
-          setToken(data.token);
-          setUser(data.user);
-        }
+    hashPassword(formValues.password)
+      .then((hashedPassword: string) => {
+        mutateAsync({
+          usernameEmail: formValues.usernameEmail,
+          password: hashedPassword,
+        })
+          .then((data) => {
+            if (data) {
+              setToken(data.username);
+              setUser({
+                id: data.id,
+                name: data.fullName,
+                username: data.username,
+                email: data.email,
+              });
+              localStorage.setItem(
+                "logged",
+                JSON.stringify({
+                  id: data.id,
+                  name: data.fullName,
+                  username: data.username,
+                  email: data.email,
+                })
+              );
+              navigate("/");
+            }
+          })
+          .catch((error) => console.log(error));
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.error("Password hashing error:", error);
+      });
   };
 
   return (
@@ -63,12 +85,12 @@ export const SignInPage = () => {
           style={{ flex: 1, position: "relative", minHeight: "250px" }}
         >
           <FormInput
-            label="Username"
-            name="username"
+            label="Username or email"
+            name="usernameEmail"
             control={control}
             suffix={<UserOutlined />}
-            placeholder="Enter username"
-            error={errors.username?.message}
+            placeholder="Enter username or email"
+            error={errors.usernameEmail?.message}
           />
           <FormInput
             label="Password"
