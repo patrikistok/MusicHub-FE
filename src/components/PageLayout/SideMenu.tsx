@@ -10,8 +10,7 @@ const { Title } = Typography;
 export const SideMenu = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  console.log(pathname);
-  const { setToken, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
 
   const navigateHome = () => {
     navigate("/");
@@ -26,8 +25,6 @@ export const SideMenu = () => {
   };
 
   const logout = () => {
-    setToken("");
-    localStorage.removeItem("logged");
     setUser(null);
     navigate("/login");
   };

@@ -20,8 +20,6 @@ export const HomePage = () => {
   } = useListSongs();
 
   const setFirstSong = (song: Song) => {
-    console.log(song);
-    console.log(songHistory);
     setSongHistory([...songHistory, song]);
   };
 
@@ -85,7 +83,13 @@ export const HomePage = () => {
             />
           </Row>
 
-          <Flex wrap="wrap" justify="center" align="center" gap="middle">
+          <Flex
+            wrap="wrap"
+            justify="center"
+            align="center"
+            gap="middle"
+            style={{ display: songHistory.length > 0 ? "none" : "flex" }}
+          >
             {displaySongs?.map((song, id) => (
               <SongCard key={id} song={song} setCurrentSong={setFirstSong} />
             ))}

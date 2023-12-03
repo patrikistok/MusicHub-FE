@@ -19,8 +19,6 @@ export const PlaySongContainer = ({
 }: Props) => {
   const { data: songURL, mutate, isLoading, isError } = usePlaySong();
 
-  console.log(songURL);
-
   useEffect(() => {
     mutate(currentSong.sourceName);
   }, [currentSong]);

@@ -8,7 +8,7 @@ export const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!localStorage.getItem("logged")) {
+    if (!isAuthenticated) {
       navigate("/login");
     }
   }, []);
