@@ -20,3 +20,8 @@ export type RemoveSongFromPlaylistRequest = {
   playlistId: string;
   songId: string;
 };
+
+export type PlaylistCreateRequest = {
+  userId: number;
+  name: string;
+};
