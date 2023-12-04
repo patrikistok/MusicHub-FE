@@ -1,26 +1,23 @@
 import { Song } from "../types/types";
 import { Card } from "antd";
-import { useRemoveSongFromPlaylist } from "../pages/HomePage/hooks";
 import { CloseCircleOutlined, LoadingOutlined } from "@ant-design/icons";
 const { Meta } = Card;
 
 type Props = {
   song: Song;
   playlistId: string;
+  isLoading: boolean;
+  handleRemove: (songId: string) => void;
   setCurrentSong: (song: Song) => void;
 };
 
-export const SongCard = ({ song, playlistId, setCurrentSong }: Props) => {
-  const { mutateAsync, isLoading } = useRemoveSongFromPlaylist();
-
-  const handleRemove = () => {
-    if (playlistId !== "0") {
-      mutateAsync({ playlistId: playlistId, songId: song.id }).then(() => {
-        window.location.reload();
-      });
-    }
-  };
-
+export const SongCard = ({
+  song,
+  playlistId,
+  isLoading,
+  handleRemove,
+  setCurrentSong,
+}: Props) => {
   return (
     <div style={{ position: "relative" }}>
       <Card
@@ -52,11 +49,11 @@ export const SongCard = ({ song, playlistId, setCurrentSong }: Props) => {
           }}
         >
           {isLoading ? (
-            <LoadingOutlined style={{ fontSize: "20px" }} />
+            <LoadingOutlined style={{ color: "white", fontSize: "20px" }} />
           ) : (
             <CloseCircleOutlined
               style={{ color: "red", fontSize: "20px" }}
-              onClick={handleRemove}
+              onClick={() => handleRemove(song.id)}
             />
           )}
         </div>

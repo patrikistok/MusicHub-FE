@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { SongCard } from "../../components/SongCard";
-import { useListSongs, usePlaylistSongs } from "./hooks";
+import {
+  useListSongs,
+  usePlaylistSongs,
+  useRemoveSongFromPlaylist,
+} from "./hooks";
 import "./homePage.css";
 import { Song } from "../../types/types";
 import { Flex, Input, Row } from "antd";
@@ -27,6 +31,24 @@ export const HomePage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const playlistParam = queryParams.get("playlist") ?? "0";
+
+  const { mutateAsync, isLoading: isLoadingRemove } =
+    useRemoveSongFromPlaylist();
+
+  const handleRemove = (songId: string) => {
+    if (playlistParam !== "0") {
+      mutateAsync({ playlistId: playlistParam, songId }).then((data) => {
+        const songs: Song[] =
+          fetchedSongs?.filter((song) => {
+            const found = !!data?.songs.find(
+              (number) => number === Number(song.id)
+            );
+            return found;
+          }) || [];
+        setFetchedSongs(songs);
+      });
+    }
+  };
 
   const {
     data: fetchedPlaylistSongs,
@@ -138,6 +160,8 @@ export const HomePage = () => {
                 key={id}
                 song={song}
                 playlistId={playlistParam}
+                isLoading={isLoadingRemove}
+                handleRemove={handleRemove}
                 setCurrentSong={setFirstSong}
               />
             ))}
