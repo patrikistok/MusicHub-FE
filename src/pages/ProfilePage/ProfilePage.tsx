@@ -1,9 +1,22 @@
-import { Avatar, Button, Divider, Flex, Typography } from "antd";
-import { CaretRightOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import { useUserPlaylists } from "./hooks";
+import { Avatar, Button, Divider, Flex, Modal, Typography } from "antd";
+import { PlusCircleOutlined } from "@ant-design/icons";
+import { useCreatePlaylist, useUserPlaylists } from "./hooks";
+import { useContext, useState } from "react";
+import { FormInput } from "../../components/forms/FormInput";
+import { string, z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AuthContext } from "../../contexts/useAuthContext";
+import { PlaylistDiv } from "../../components/PlaylistDiv";
+
+const { Text } = Typography;
+
+const schema = z.object({
+  playlistName: string().min(1, { message: "Playlist name is required" }),
+});
 
 const { Title } = Typography;
+type FormType = z.infer<typeof schema>;
 
 export const Profile = () => {
   const loggedUser = JSON.parse(localStorage.getItem("user") ?? "");
@@ -11,8 +24,41 @@ export const Profile = () => {
     data: fetchedPlaylists,
     isError: isSongsError,
     isLoading: isSongsLoading,
+    refetch,
   } = useUserPlaylists(loggedUser.id);
-  const navigate = useNavigate();
+
+  const { mutateAsync, isLoading, isError, error } = useCreatePlaylist();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { user } = useContext(AuthContext);
+
+  const { handleSubmit, formState, control } = useForm<FormType>({
+    defaultValues: { playlistName: "" },
+    resolver: zodResolver(schema),
+  });
+  const { errors } = formState;
+
+  const handleSave = async (formValues: FormType) => {
+    mutateAsync({
+      userId: user!.id,
+      name: formValues.playlistName,
+    })
+      .then((data) => {
+        if (data) {
+          refetch();
+          setIsModalOpen(false);
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div>
@@ -37,43 +83,65 @@ export const Profile = () => {
       <div style={{ padding: "50px" }}>
         <Flex style={{ justifyContent: "space-between", alignItems: "center" }}>
           <Title level={3}>My playlists</Title>
-          <Button icon={<PlusCircleOutlined />}>Add playlist</Button>
+          <Button onClick={showModal} icon={<PlusCircleOutlined />}>
+            Add playlist
+          </Button>
+          <Modal
+            title="Create playlist"
+            open={isModalOpen}
+            onCancel={handleCancel}
+            footer={false}
+          >
+            <form
+              onSubmit={handleSubmit(handleSave)}
+              style={{ flex: 1, position: "relative", minHeight: "250px" }}
+            >
+              <FormInput
+                label="Name of the new playlist"
+                name="playlistName"
+                control={control}
+                placeholder="Enter playlist name"
+                error={errors.playlistName?.message}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  display: "flex",
+                  flexDirection: "row-reverse",
+                  bottom: 0,
+                  width: "100%",
+                }}
+              >
+                <Button key="back" onClick={handleCancel}>
+                  Cancel
+                </Button>
+                <Button
+                  disabled={isLoading}
+                  htmlType="submit"
+                  type="primary"
+                  style={{ marginRight: "10px" }}
+                >
+                  Create
+                </Button>
+                {isError && <Text type="danger">{error.message}</Text>}
+              </div>
+            </form>
+          </Modal>
         </Flex>
         <Divider></Divider>
         {isSongsError && <div>Error fetching user playlists</div>}
         {isSongsLoading && <div>Loading user playlists</div>}
         {fetchedPlaylists && fetchedPlaylists?.length === 0 && (
-          <div>No playlists for current user</div>
+          <Title level={4}>No playlists for current user</Title>
         )}
         {fetchedPlaylists && fetchedPlaylists?.length > 0 && (
           <>
             <Flex wrap="wrap" gap="middle">
               {fetchedPlaylists?.map((playlist) => (
-                <Flex
-                  key={playlist.id}
-                  style={{
-                    width: "100%",
-                    cursor: "pointer",
-                    border: "1px solid #ebebeb",
-                    borderRadius: "5px",
-                    padding: "10px",
-                    transition: "background-color 0.3s",
-                    backgroundColor: "#f0f0f0",
-                  }}
-                  onClick={() => navigate(`/homepage/?playlist=${playlist.id}`)}
-                >
-                  <div
-                    style={{
-                      width: "100%",
-                    }}
-                  >
-                    <Title level={5}> {playlist.name}</Title>
-                    <p style={{ marginLeft: "10px" }}>
-                      {playlist.songs.length} songs
-                    </p>
-                  </div>
-                  {<CaretRightOutlined />}
-                </Flex>
+                <PlaylistDiv
+                  playlist={playlist}
+                  refetch={refetch}
+                ></PlaylistDiv>
               ))}
             </Flex>
           </>
