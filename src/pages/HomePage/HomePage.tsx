@@ -1,23 +1,53 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SongCard } from "../../components/SongCard";
-import { useListSongs } from "./hooks";
+import { useListSongs, usePlaylistSongs } from "./hooks";
 import "./homePage.css";
-import { Song } from "../../types/Song";
+import { Song } from "../../types/types";
 import { Flex, Input, Row } from "antd";
 import _debounce from "lodash/debounce";
 import { PlaySongContainer } from "./components/PlaySongContainer";
 import { SearchOutlined } from "@ant-design/icons";
+import { useLocation } from "react-router-dom";
 
 export const HomePage = () => {
   const [songHistory, setSongHistory] = useState<Song[]>([]);
   const [historyPosition, setHistoryPosition] = useState<number>(0);
   const [searchInput, setSearchInput] = useState("");
   const [filteredSongs, setFilteredSongs] = useState<Song[]>([]);
+  const [fetchedSongs, setFetchedSongs] = useState<Song[] | undefined>(
+    undefined
+  );
   const {
-    data: fetchedSongs,
+    data: fetchedSongsAll,
     isError: isSongsError,
     isLoading: isSongsLoading,
   } = useListSongs();
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const playlistParam = queryParams.get("playlist") ?? "0";
+
+  const {
+    data: fetchedPlaylistSongs,
+    isError: isPlaylistSongsError,
+    isLoading: isPlaylistSongsLoading,
+  } = usePlaylistSongs(playlistParam);
+
+  useEffect(() => {
+    if (playlistParam === "0") {
+      setFetchedSongs(fetchedSongsAll);
+    } else {
+      setFetchedSongs(
+        fetchedSongsAll?.filter((song) =>
+          fetchedPlaylistSongs?.songs.includes(Number(song.id))
+        )
+      );
+    }
+  }, [playlistParam, fetchedSongsAll, fetchedPlaylistSongs]);
+
+  const isError = playlistParam === "0" ? isSongsError : isPlaylistSongsError;
+  const isLoading =
+    playlistParam === "0" ? isSongsLoading : isPlaylistSongsLoading;
 
   const setFirstSong = (song: Song) => {
     setSongHistory([...songHistory, song]);
@@ -70,8 +100,8 @@ export const HomePage = () => {
 
   return (
     <div style={{ height: "100vh", width: "100%", position: "relative" }}>
-      {isSongsError && <div>Error fetching all songs data</div>}
-      {isSongsLoading && <div>Loading all songs data</div>}
+      {isError && <div>Error fetching all songs data</div>}
+      {isLoading && <div>Loading all songs data</div>}
       {fetchedSongs && fetchedSongs?.length > 0 && (
         <>
           <Row justify="center" align="middle" style={{ margin: 20 }}>

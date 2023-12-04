@@ -8,3 +8,10 @@ export type Song = {
   genre: string;
   playlists: Array<string>;
 };
+
+export type Playlist = {
+  id: number;
+  name: string;
+  user: number;
+  songs: number[];
+};

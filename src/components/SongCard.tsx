@@ -1,4 +1,4 @@
-import { Song } from "../types/Song";
+import { Song } from "../types/types";
 import { Card } from "antd";
 const { Meta } = Card;
 

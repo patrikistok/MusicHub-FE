@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { Song } from "../../types/Song";
+import { Playlist, Song } from "../../types/types";
 import api from "../../api";
 
 export const fetchSongs = async (): Promise<Song[]> => {
@@ -27,5 +27,18 @@ export const playSongBySourceName = async (
     return blobUrl;
   } catch (error: any) {
     console.log(error.response?.data?.message);
+  }
+};
+
+export const fetchPlaylistSongs = async (
+  playlistId: string
+): Promise<Playlist> => {
+  try {
+    const response: AxiosResponse<Playlist> = await api.get(
+      `/playlist/${playlistId}`
+    );
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "An error occurred");
   }
 };
