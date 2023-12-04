@@ -2,7 +2,7 @@ import ReactPlayer from "react-player";
 import { useRef, useState } from "react";
 import { AudioDetails } from "./AudioDetails";
 import { PlayerControls } from "./PlayerControls";
-import { Song } from "../types/Song";
+import { Song } from "../types/types";
 import { Lyrics } from "../pages/HomePage/components/Lyrics";
 
 type Props = {

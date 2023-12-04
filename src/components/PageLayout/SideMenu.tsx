@@ -17,7 +17,7 @@ export const SideMenu = () => {
   };
 
   const navigateToMyLibrary = () => {
-    navigate("/my_library");
+    navigate("/profile");
   };
 
   const navigateToCreate = () => {
@@ -52,7 +52,7 @@ export const SideMenu = () => {
         label="My Library"
         icon={<BookOutlined style={{ fontSize: "20px" }} />}
         onClick={navigateToMyLibrary}
-        isActive={pathname === "/my_library"}
+        isActive={pathname === "/profile"}
       />
       {/* <MenuItem
         label="Create song"

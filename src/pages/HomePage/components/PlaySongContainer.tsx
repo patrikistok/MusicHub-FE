@@ -1,5 +1,5 @@
 import { CloseOutlined } from "@ant-design/icons";
-import { Song } from "../../../types/Song";
+import { Song } from "../../../types/types";
 import { usePlaySong } from "../hooks";
 import { useEffect } from "react";
 import { AudioPlayer } from "../../../components/AudioPlayer";

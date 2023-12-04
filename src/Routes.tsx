@@ -4,7 +4,7 @@ import { SignInPage } from "./pages/AuthPage/SignInPage";
 import { SignUpPage } from "./pages/AuthPage/SingUpPage";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { AuthRoute } from "./AuthRoute";
-import { Profile } from "./pages/Profile/Profile";
+import { Profile } from "./pages/ProfilePage/ProfilePage";
 
 export const Routes = () => {
   return (
