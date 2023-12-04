@@ -21,9 +21,9 @@ export const usePlaySong = (): UseMutationResult<
   unknown
 > => useMutation(playSongBySourceName);
 
-export const usePlaylistSongs = (
-  playlistId: string
-): UseQueryResult<Playlist, Error> =>
-  useQuery(["playlist", playlistId], () => fetchPlaylistSongs(playlistId), {
-    enabled: !!playlistId, // Ensure the query is enabled only when playlistId is truthy
-  });
+export const usePlaylistSongs = (): UseMutationResult<
+  Playlist,
+  Error,
+  string,
+  unknown
+> => useMutation(fetchPlaylistSongs);

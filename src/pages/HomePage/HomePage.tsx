@@ -32,7 +32,14 @@ export const HomePage = () => {
     data: fetchedPlaylistSongs,
     isError: isPlaylistSongsError,
     isLoading: isPlaylistSongsLoading,
-  } = usePlaylistSongs(playlistParam);
+    mutate,
+  } = usePlaylistSongs();
+
+  useEffect(() => {
+    if (playlistParam !== "0") {
+      mutate(playlistParam);
+    }
+  }, [playlistParam]);
 
   useEffect(() => {
     if (playlistParam === "0") {
