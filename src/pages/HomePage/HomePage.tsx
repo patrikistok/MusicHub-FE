@@ -134,7 +134,12 @@ export const HomePage = () => {
             style={{ display: songHistory.length > 0 ? "none" : "flex" }}
           >
             {displaySongs?.map((song, id) => (
-              <SongCard key={id} song={song} setCurrentSong={setFirstSong} />
+              <SongCard
+                key={id}
+                song={song}
+                playlistId={playlistParam}
+                setCurrentSong={setFirstSong}
+              />
             ))}
             {displaySongs?.length === 0 && (
               <div>

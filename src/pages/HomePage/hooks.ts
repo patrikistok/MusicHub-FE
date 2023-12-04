@@ -4,11 +4,16 @@ import {
   useMutation,
   useQuery,
 } from "react-query";
-import { Playlist, Song } from "../../types/types";
+import {
+  Playlist,
+  RemoveSongFromPlaylistRequest,
+  Song,
+} from "../../types/types";
 import {
   fetchPlaylistSongs,
   fetchSongs,
   playSongBySourceName,
+  removeSongFromPlaylist,
 } from "./queries";
 
 export const useListSongs = (): UseQueryResult<Song[], Error> =>
@@ -22,8 +27,15 @@ export const usePlaySong = (): UseMutationResult<
 > => useMutation(playSongBySourceName);
 
 export const usePlaylistSongs = (): UseMutationResult<
-  Playlist,
+  Playlist | undefined,
   Error,
   string,
   unknown
 > => useMutation(fetchPlaylistSongs);
+
+export const useRemoveSongFromPlaylist = (): UseMutationResult<
+  Playlist | undefined,
+  Error,
+  RemoveSongFromPlaylistRequest,
+  unknown
+> => useMutation(removeSongFromPlaylist);

@@ -15,3 +15,8 @@ export type Playlist = {
   user: number;
   songs: number[];
 };
+
+export type RemoveSongFromPlaylistRequest = {
+  playlistId: string;
+  songId: string;
+};
