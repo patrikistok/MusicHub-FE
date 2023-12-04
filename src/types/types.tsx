@@ -15,3 +15,8 @@ export type Playlist = {
   user: number;
   songs: number[];
 };
+
+export type PlaylistCreateRequest = {
+  userId: number;
+  name: string;
+};
