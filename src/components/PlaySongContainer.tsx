@@ -1,8 +1,8 @@
 import { CloseOutlined } from "@ant-design/icons";
-import { Song } from "../../../types/types";
-import { usePlaySong } from "../hooks";
+import { Song } from "../types/types";
+import { usePlaySong } from "../pages/HomePage/hooks";
 import { useEffect } from "react";
-import { AudioPlayer } from "../../../components/AudioPlayer";
+import { AudioPlayer } from "./AudioPlayer";
 
 type Props = {
   currentSong: Song;

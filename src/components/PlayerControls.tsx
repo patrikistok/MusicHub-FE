@@ -4,6 +4,7 @@ import { VscMute, VscUnmute } from "react-icons/vsc";
 import { ImLoop } from "react-icons/im";
 import { Duration } from "./Duration";
 import { StepBackwardOutlined, StepForwardOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
 type Props = {
   playerRef: any;
@@ -112,19 +113,26 @@ export const PlayerControls = ({
       <div className="grid grid-cols-3 items-center ">
         {/* loop button */}
         <div className="flex justify-center">
-          <button
+          <Button
+            style={{
+              background: "transparent",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
             className={`focus:outline focus:outline-cyan-500 font-bold hover:bg-gray-200 ${
               loop && "text-cyan-500"
             }`}
             onClick={toggleLoop}
           >
             <ImLoop />
-          </button>
+          </Button>
         </div>
 
         {/* play/pause button */}
         <div className="flex gap-2 justify-center">
           <button
+            style={{ background: "transparent" }}
             ref={playPauseButtonRef}
             className="focus:outline focus:outline-cyan-500 border border-cyan-500 rounded-md p-4 hover:bg-gray-200"
             onClick={handlePrevious}
@@ -132,6 +140,7 @@ export const PlayerControls = ({
             <StepBackwardOutlined />
           </button>
           <button
+            style={{ background: "transparent" }}
             ref={playPauseButtonRef}
             className="focus:outline focus:outline-cyan-500 border border-cyan-500 rounded-md p-4 hover:bg-gray-200"
             onClick={togglePlayAndPause}
@@ -139,6 +148,7 @@ export const PlayerControls = ({
             {playing ? <CiPause1 /> : <CiPlay1 />}
           </button>
           <button
+            style={{ background: "transparent" }}
             ref={playPauseButtonRef}
             className="focus:outline focus:outline-cyan-500 border border-cyan-500 rounded-md p-4 hover:bg-gray-200"
             onClick={handleNext}
@@ -150,12 +160,18 @@ export const PlayerControls = ({
         {/* volume control */}
         <div className="flex justify-center items-center gap-1">
           {/* mute button */}
-          <button
+          <Button
+            style={{
+              background: "transparent",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
             className="focus:outline focus:outline-cyan-500"
             onClick={toggleMute}
           >
             {muted ? <VscMute /> : <VscUnmute />}
-          </button>
+          </Button>
 
           {/* volume slider */}
           <input
