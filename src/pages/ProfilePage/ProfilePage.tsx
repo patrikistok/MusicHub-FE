@@ -1,5 +1,5 @@
 import { Avatar, Button, Divider, Flex, Typography } from "antd";
-import { CaretRightOutlined } from "@ant-design/icons";
+import { CaretRightOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useUserPlaylists } from "./hooks";
 
@@ -35,7 +35,10 @@ export const Profile = () => {
         </Button> */}
       </Flex>
       <div style={{ padding: "50px" }}>
-        <Title level={3}>My playlists</Title>
+        <Flex style={{ justifyContent: "space-between", alignItems: "center" }}>
+          <Title level={3}>My playlists</Title>
+          <Button icon={<PlusCircleOutlined />}>Add playlist</Button>
+        </Flex>
         <Divider></Divider>
         {isSongsError && <div>Error fetching user playlists</div>}
         {isSongsLoading && <div>Loading user playlists</div>}
@@ -64,7 +67,6 @@ export const Profile = () => {
                       width: "100%",
                     }}
                   >
-                    {" "}
                     <Title level={5}> {playlist.name}</Title>
                     <p style={{ marginLeft: "10px" }}>
                       {playlist.songs.length} songs
