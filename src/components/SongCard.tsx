@@ -4,7 +4,7 @@ const { Meta } = Card;
 
 type Props = {
   song: Song;
-  setCurrentSong: React.Dispatch<React.SetStateAction<Song | undefined>>;
+  setCurrentSong: (song: Song) => void;
 };
 
 export const SongCard = ({ song, setCurrentSong }: Props) => {

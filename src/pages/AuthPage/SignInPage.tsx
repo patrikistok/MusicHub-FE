@@ -28,7 +28,7 @@ export const SignInPage = () => {
     resolver: zodResolver(schema),
   });
   const { errors } = formState;
-  const { setToken, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSave = async (formValues: FormType) => {
@@ -40,14 +40,12 @@ export const SignInPage = () => {
         })
           .then((data) => {
             if (data) {
-              setToken(data.username);
               setUser({
                 id: data.id,
                 name: data.fullName,
                 username: data.username,
                 email: data.email,
               });
-              localStorage.setItem("logged", data.username);
               navigate("/");
             }
           })

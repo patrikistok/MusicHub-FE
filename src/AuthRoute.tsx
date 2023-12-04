@@ -8,7 +8,7 @@ export const AuthRoute = () => {
   document.body.style.overflow = "auto";
 
   useEffect(() => {
-    if (localStorage.getItem("logged")) {
+    if (isAuthenticated) {
       navigate("/");
     }
   }, []);

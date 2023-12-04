@@ -58,7 +58,7 @@ export const SignUpPage = () => {
   });
 
   const { errors } = formState;
-  const { setToken, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const onSubmit = async (formValues: FormType) => {
