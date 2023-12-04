@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useEffect, useState } from "react";
 import { SongCard } from "../../components/SongCard";
 import { useListSongs, usePlaylistSongs } from "./hooks";
 import "./homePage.css";
@@ -8,6 +7,8 @@ import { Flex, Input, Row } from "antd";
 import _debounce from "lodash/debounce";
 import { PlaySongContainer } from "../../components/PlaySongContainer";
 import { SearchOutlined } from "@ant-design/icons";
+import { useLocation } from "react-router-dom";
+import Title from "antd/es/typography/Title";
 
 export const HomePage = () => {
   const [songHistory, setSongHistory] = useState<Song[]>([]);
