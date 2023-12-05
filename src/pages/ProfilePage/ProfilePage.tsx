@@ -76,9 +76,6 @@ export const Profile = () => {
         <Title level={3} style={{ margin: 0 }}>
           {loggedUser.name}{" "}
         </Title>
-        {/* <Button ghost style={{ paddingRight: "30px", paddingLeft: "30px" }}>
-          Edit
-        </Button> */}
       </Flex>
       <div style={{ padding: "50px" }}>
         <Flex style={{ justifyContent: "space-between", alignItems: "center" }}>

@@ -36,3 +36,15 @@ export const deleteUserPlaylist = async (
     console.log(error.message);
   }
 };
+
+export const saveSongToPlaylist = async (
+  playlistId: string,
+  songId: string
+): Promise<Playlist | undefined> => {
+  try {
+    const response = await api.post(`/playlist/${playlistId}?songId=${songId}`);
+    return response.data;
+  } catch (error: any) {
+    console.log(error.message);
+  }
+};
